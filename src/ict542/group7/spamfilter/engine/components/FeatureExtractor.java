@@ -73,7 +73,7 @@ public class FeatureExtractor {
 			
 			if (isFor == FOR_TRAINING) {
 				// add feature to storage
-				dataStorage.addFeature(tokenizer.nextToken(), emailType);
+				dataStorage.addFeature(token, emailType);
 			} else if (isFor == FOR_ANALYSIS) {
 				// add email feature to analysis engine
 				analysisEngine.addEmailFeature(token);

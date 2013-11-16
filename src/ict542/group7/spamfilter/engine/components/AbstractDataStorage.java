@@ -13,20 +13,9 @@ import java.util.Map;
 public abstract class AbstractDataStorage {
 	protected Map<String, Feature> featureMap = new HashMap<String, Feature>();
 	
-	private int totalOfSpam;
-	private int totalOfHam;
-	
 	public abstract void addFeature(String tokenString, int emailType);
 	
-	public void setTotalOfSpam(int totalOfSpam) {
-		this.totalOfSpam = totalOfSpam;
-	}
-	
-	public void setTotalOfHam(int totalOfHam) {
-		this.totalOfHam = totalOfHam;
-	}
-	
-	public void computeFeatureProbabilities() {
+	public void computeFeatureProbabilities(int totalOfSpam, int totalOfHam) {
 		for (Map.Entry<String, Feature> entry : featureMap.entrySet()) {
 			Feature feature = entry.getValue();
 			feature.computeProbability(totalOfSpam, totalOfHam);

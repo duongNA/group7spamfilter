@@ -15,7 +15,10 @@ public class testFeatureExtractor {
 		AnalysisEngine analysisEngine = new AnalysisEngine(storage);
 		FeatureExtractor extractor = new FeatureExtractor(storage, analysisEngine);
 		
-		String emailFilePath = "test/data/email-test";
+		String emailFilePath = "test/data/011";
+		extractor.extractFeatures(emailFilePath, Constants.SPAM_EMAIL, FeatureExtractor.FOR_TRAINING);
+		
+		emailFilePath = "test/data/email-test";
 		extractor.extractFeatures(emailFilePath, Constants.SPAM_EMAIL, FeatureExtractor.FOR_TRAINING);
 	}
 }

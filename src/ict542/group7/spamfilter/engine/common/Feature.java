@@ -115,4 +115,17 @@ public class Feature {
 	private boolean isHapax() {
 		return (occurInSpam + 2*occurInHam) < Constants.HAPAXES_THRESHOLD;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(tokenString);
+		builder.append(" - ");
+		builder.append(occurInSpam);
+		builder.append(" - ");
+		builder.append(occurInHam);
+		builder.append(" - ");
+		builder.append(probabily);
+		return builder.toString();
+	}
 }

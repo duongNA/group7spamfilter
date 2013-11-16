@@ -10,8 +10,7 @@ import java.util.Map;
  * Manages feature information
  */
 public class MemoryDataStorage extends AbstractDataStorage {
-	private Map<String, Feature> featureMap = new HashMap<>();
-	
+		
 	@Override
 	public void addFeature(String tokenString, int emailType) {
 		Feature feature = featureMap.get(tokenString);
