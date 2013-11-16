@@ -1,4 +1,4 @@
-package ict542.group7.spamfilter.test;
+package ict542.group7.spamfilter.mics;
 
 import org.apache.log4j.Logger;
 
