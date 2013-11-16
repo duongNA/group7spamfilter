@@ -1,21 +1,21 @@
 package ict542.group7.spamfilter.engine;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.log4j.Logger;
-
 import ict542.group7.spamfilter.engine.common.Constants;
+import ict542.group7.spamfilter.engine.common.DataClearable;
 import ict542.group7.spamfilter.engine.components.AbstractDataStorage;
 import ict542.group7.spamfilter.engine.components.AnalysisEngine;
 import ict542.group7.spamfilter.engine.components.FeatureExtractor;
 import ict542.group7.spamfilter.engine.components.MemoryDataStorage;
 
+import java.io.File;
+
+import org.apache.log4j.Logger;
+
 /**
  * Spam filter engine 
  *
  */
-public class SpamFilterEngine {
+public class SpamFilterEngine implements DataClearable {
 	
 	private static final Logger logger = Logger.getLogger(SpamFilterEngine.class);
 	
@@ -35,7 +35,9 @@ public class SpamFilterEngine {
 
 		File[] spamEmailFiles = spamDir.listFiles();
 		File[] hamEmailFiles = hamDir.listFiles();
+		
 		// extract features from each emails and pass to data storage
+		dataStorage.clearData();
 		processFileList(spamEmailFiles, Constants.SPAM_EMAIL);
 		processFileList(hamEmailFiles, Constants.HAM_EMAIL);
 		
@@ -56,8 +58,15 @@ public class SpamFilterEngine {
 	}
 	
 	public boolean analysisIsSpam(String emailFilePath) {
+		analysisEngine.clearData();
 		featureExtractor.extractFeatures(emailFilePath, null, FeatureExtractor.FOR_ANALYSIS);
 		return analysisEngine.isSpamEmail();
+	}
+
+	@Override
+	public void clearData() {
+		dataStorage.clearData();
+		analysisEngine.clearData();
 	}
 
 }
