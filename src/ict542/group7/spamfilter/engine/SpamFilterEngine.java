@@ -23,6 +23,8 @@ public class SpamFilterEngine implements DataClearable {
 	private AnalysisEngine analysisEngine;
 	private AbstractDataStorage dataStorage;
 	
+	private EngineExtractListener engineExtractListener;
+	
 	public SpamFilterEngine() {
 		dataStorage = new MemoryDataStorage();
 		analysisEngine = new AnalysisEngine(dataStorage);
@@ -46,9 +48,14 @@ public class SpamFilterEngine implements DataClearable {
 	}
 	
 	private void processFileList(File[] fileList, int emailType) {
+		int counter = 0;
 		for (File file : fileList) {
 			if (file.isFile()) {
 				featureExtractor.extractFeatures(file.getAbsolutePath(), emailType, FeatureExtractor.FOR_TRAINING);
+				counter++;
+				if (engineExtractListener != null) {
+					engineExtractListener.handleReport(counter, emailType);
+				}
 			}
 		}
 	}
@@ -69,4 +76,8 @@ public class SpamFilterEngine implements DataClearable {
 		analysisEngine.clearData();
 	}
 
+	public void setEngineExtractListener(EngineExtractListener listener) {
+		engineExtractListener = listener;
+	}
+	
 }
