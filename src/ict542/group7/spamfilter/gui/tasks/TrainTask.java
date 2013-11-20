@@ -16,6 +16,7 @@ import ict542.group7.spamfilter.gui.tableunit.FeatureDataModel;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
@@ -26,6 +27,7 @@ public class TrainTask extends SwingWorker<Void, Void> implements EngineExtractL
 	public static final String HAM_PROGRESS = "ham-progress";
 	
 	private JButton btnStart;
+	private JLabel lbNumOfFeature;
 	private JTable tbFeature;
 	private String spamDir;
 	private String hamDir;
@@ -36,8 +38,9 @@ public class TrainTask extends SwingWorker<Void, Void> implements EngineExtractL
 	private int spamProgress = 0;
 	private int hamProgress = 0;
 	
-	public TrainTask(Component rootWindow, JButton btnStart, JTable tbFeature, String spamDir, String hamDir, int totalOfSpam, int totalOfHam) {
+	public TrainTask(Component rootWindow, JButton btnStart, JTable tbFeature, JLabel lbNumOfFeature, String spamDir, String hamDir, int totalOfSpam, int totalOfHam) {
 		this.btnStart = btnStart;
+		this.lbNumOfFeature = lbNumOfFeature;
 		this.tbFeature = tbFeature;
 		this.spamDir = spamDir;
 		this.hamDir = hamDir;
@@ -81,6 +84,8 @@ public class TrainTask extends SwingWorker<Void, Void> implements EngineExtractL
 		if (model instanceof FeatureDataModel) {
 			((FeatureDataModel) model).setFeatureList(newFeatureList);
 		}
+		
+		lbNumOfFeature.setText(String.valueOf(newFeatureList.size()));
 		
 		JOptionPane.showMessageDialog(rootWindow, "Training completed");
 		btnStart.setEnabled(true);

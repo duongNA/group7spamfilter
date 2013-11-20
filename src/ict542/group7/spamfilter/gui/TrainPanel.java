@@ -80,6 +80,8 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 	private ProgressMonitor pgMonitor;
 	
 	private JTable tbFeature;
+	private JLabel lbIntroNumOfFeature;
+	private JLabel lbNumOfFeature;
 	
 	public TopTrainPanel(JTable tbFeature) {
 		this.tbFeature = tbFeature;
@@ -115,6 +117,11 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 		add(lbProcessHam, SwingUtils.createConstraints(0, 6, 2, 1));
 		add(pbHam, SwingUtils.createConstraints(2, 6, 2, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 0, 0)));
 		add(lbProcessHamCounter, SwingUtils.createConstraints(4, 6, 1, 1));
+		
+		// number of feature
+		add(lbIntroNumOfFeature, SwingUtils.createConstraints(0, 7, 2, 1));
+		add(lbNumOfFeature, SwingUtils.createConstraints(2, 7, 2, 1));
+		
 	}
 	
 	private void initComponents() {
@@ -135,6 +142,9 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 		pbHam = new JProgressBar();
 		lbProcessSpamCounter = new JLabel();
 		lbProcessHamCounter = new JLabel();
+		lbIntroNumOfFeature = new JLabel("Number of extracted features:");
+		lbNumOfFeature = new JLabel("0");
+		
 		fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
@@ -176,7 +186,9 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 			
 			// start training
 			btnStartTraining.setEnabled(false);
-			TrainTask task = new TrainTask(SwingUtils.getRootWindow(this), btnStartTraining, tbFeature, tfSpamDir.getText(), tfHamDir.getText(), numOfSpam, numOfHam);
+			lbProcessSpamCounter.setText("0%");
+			lbProcessHamCounter.setText("0%");
+			TrainTask task = new TrainTask(SwingUtils.getRootWindow(this), btnStartTraining, tbFeature, lbNumOfFeature, tfSpamDir.getText(), tfHamDir.getText(), numOfSpam, numOfHam);
 			task.addPropertyChangeListener(this);
 			task.execute();
 		}
@@ -187,9 +199,11 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 		if (TrainTask.SPAM_PROGRESS.equals(evt.getPropertyName())) {
 			int progress = (Integer) evt.getNewValue();
 			pbSpam.setValue(progress);
+			lbProcessSpamCounter.setText(progress + "%");
 		} else if (TrainTask.HAM_PROGRESS.equals(evt.getPropertyName())) {
 			int progress = (Integer) evt.getNewValue();
 			pbHam.setValue(progress);
+			lbProcessHamCounter.setText(progress + "%");
 		}
 		
 	}
