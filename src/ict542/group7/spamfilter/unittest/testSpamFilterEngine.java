@@ -1,13 +1,8 @@
 package ict542.group7.spamfilter.unittest;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import ict542.group7.spamfilter.engine.SpamFilterEngine;
 
 import org.junit.Test;
-
-import ict542.group7.spamfilter.engine.SpamFilterEngine;
-import ict542.group7.spamfilter.engine.common.Feature;
-import ict542.group7.spamfilter.engine.components.AbstractDataStorage;
 
 public class testSpamFilterEngine {
 
@@ -16,17 +11,17 @@ public class testSpamFilterEngine {
 		try {
 			SpamFilterEngine engine = new SpamFilterEngine();
 
-			String spamDirPath = "test/data/spam";
-			String hamDirPath = "test/data/ham";
+			String spamDirPath = "/home/letmsee/Desktop/build_data_set/testSet/spam";
+			String hamDirPath = "/home/letmsee/Desktop/build_data_set/testSet/ham";
 			engine.train(spamDirPath, hamDirPath);
 
-			AbstractDataStorage dataStorage = engine.getDataStorage();
-			Map<String, Feature> map = dataStorage.getFeatureMap();
-
-			System.out.println("---- Training result ----");
-			for (Entry<String, Feature> entry : map.entrySet()) {
-				System.out.println(entry.getValue().toString());
-			}
+//			AbstractDataStorage dataStorage = engine.getDataStorage();
+//			Map<String, Feature> map = dataStorage.getFeatureMap();
+//
+//			System.out.println("---- Training result ----");
+//			for (Entry<String, Feature> entry : map.entrySet()) {
+//				System.out.println(entry.getValue().toString());
+//			}
 			
 			
 		} catch (Exception e) {

@@ -6,6 +6,7 @@ import ict542.group7.spamfilter.engine.components.AbstractDataStorage;
 import ict542.group7.spamfilter.engine.components.AnalysisEngine;
 import ict542.group7.spamfilter.engine.components.FeatureExtractor;
 import ict542.group7.spamfilter.engine.components.MemoryDataStorage;
+import ict542.group7.spamfilter.engine.components.SqlDataStorage;
 
 import java.io.File;
 
@@ -26,9 +27,11 @@ public class SpamFilterEngine implements DataClearable {
 	private EngineExtractListener engineExtractListener;
 	
 	public SpamFilterEngine() {
-		dataStorage = new MemoryDataStorage();
+		dataStorage = new SqlDataStorage();
 		analysisEngine = new AnalysisEngine(dataStorage);
 		featureExtractor = new FeatureExtractor(dataStorage, analysisEngine);
+		
+		clearData();
 	}
 	
 	public void train(String spamDirPath, String hamDirPath) {
@@ -54,7 +57,7 @@ public class SpamFilterEngine implements DataClearable {
 				featureExtractor.extractFeatures(file.getAbsolutePath(), emailType, FeatureExtractor.FOR_TRAINING);
 				counter++;
 				if (engineExtractListener != null) {
-					engineExtractListener.handleReport(counter, emailType);
+//					engineExtractListener.handleReport(counter, emailType);
 				}
 			}
 		}

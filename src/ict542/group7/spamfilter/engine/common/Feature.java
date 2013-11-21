@@ -58,6 +58,10 @@ public class Feature {
 		occurInHam++;
 	}
 	
+	public void setOccurInHam(int occurInHam) {
+		this.occurInHam = occurInHam;
+	}
+	
 	public double getPropability() {
 		return probabily;
 	}
