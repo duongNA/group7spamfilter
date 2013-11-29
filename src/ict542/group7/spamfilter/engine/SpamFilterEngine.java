@@ -27,7 +27,8 @@ public class SpamFilterEngine implements DataClearable {
 	private EngineExtractListener engineExtractListener;
 	
 	public SpamFilterEngine() {
-		dataStorage = new SqlDataStorage();
+		//dataStorage = new SqlDataStorage();
+		dataStorage = new MemoryDataStorage();
 		analysisEngine = new AnalysisEngine(dataStorage);
 		featureExtractor = new FeatureExtractor(dataStorage, analysisEngine);
 		
@@ -43,6 +44,7 @@ public class SpamFilterEngine implements DataClearable {
 		
 		// extract features from each emails and pass to data storage
 		dataStorage.clearData();
+		logger.debug("start training...");
 		processFileList(spamEmailFiles, Constants.SPAM_EMAIL);
 		processFileList(hamEmailFiles, Constants.HAM_EMAIL);
 		
@@ -51,13 +53,15 @@ public class SpamFilterEngine implements DataClearable {
 	}
 	
 	private void processFileList(File[] fileList, int emailType) {
+		logger.debug("process spam files...");
 		int counter = 0;
 		for (File file : fileList) {
 			if (file.isFile()) {
+				logger.debug("extract feature from file: " + file.getName());
 				featureExtractor.extractFeatures(file.getAbsolutePath(), emailType, FeatureExtractor.FOR_TRAINING);
 				counter++;
 				if (engineExtractListener != null) {
-//					engineExtractListener.handleReport(counter, emailType);
+					engineExtractListener.handleReport(counter, emailType);
 				}
 			}
 		}

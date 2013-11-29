@@ -52,6 +52,8 @@ public class TrainTask extends SwingWorker<Void, Void> implements EngineExtractL
 	@Override
 	protected Void doInBackground() throws Exception {
 		SpamFilterEngine engine = Global.engine;
+		// clear data
+		engine.clearData();
 		
 		engine.setEngineExtractListener(this);
 		engine.train(spamDir, hamDir);

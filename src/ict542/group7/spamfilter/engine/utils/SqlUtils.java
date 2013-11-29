@@ -2,6 +2,7 @@ package ict542.group7.spamfilter.engine.utils;
 import ict542.group7.spamfilter.engine.common.Feature;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,33 +11,52 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
-
 public class SqlUtils {
 	private static final Logger logger = Logger.getLogger(SqlUtils.class);
+	private static final String USERNAME = "admin"; 
+	private static final String PASSWORD = "123456";
 	
 	public static Connection getConnection() {
 		try {
-			String dbUrl = "jdbc:derby:AppDerbyDB;create=false";
+			Class clazz = Class.forName("com.mysql.jdbc.Driver");
+			String dbUrl = "jdbc:mysql://localhost:3306/spamfilter_db";
 			
-			Connection connection = DriverManager.getConnection(dbUrl);
+			Connection connection = DriverManager.getConnection(dbUrl, USERNAME, PASSWORD);
 			return connection;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// it means database doesn't exist
 			// create database
-			return createDB(); 
+			logger.error(null, e);
+			return null; 
 		}
 	}
 	
-	private static Connection createDB() {
+	/**
+	 * Create tables if they does not exist
+	 */
+	public static boolean initializeDB() {
+		Connection c = null;
 		try {
-			String dbUrl = "jdbc:derby:AppDerbyDB;create=true";
-			Connection c = DriverManager.getConnection(dbUrl);
-			createFeatureTable(c);
-			return c;
+			c = getConnection();
+			DatabaseMetaData metaData = c.getMetaData();
+			ResultSet rs = metaData.getTables(null, null, "Feature", null);
+			if (!rs.next()) {
+				// feature table does not exist, so create a new one
+				createFeatureTable(c);				
+			} 
+			
+			return true;
 		} catch (SQLException e) {
-			logger.error("Error when creating database", e);
-			return null;
+			logger.error(null, e);
+			return false;
+		} finally {
+			if (c != null) {
+				try {
+					c.close();
+				} catch (SQLException e) {}
+			}
 		}
+		
 	}
 	
 	private static void createFeatureTable(Connection c) throws SQLException {

@@ -125,7 +125,7 @@ class TopTrainPanel extends JPanel implements ActionListener, PropertyChangeList
 	}
 	
 	private void initComponents() {
-		btnStartTraining = new JButton("Start traing");
+		btnStartTraining = new JButton("Start training");
 		btnSpamBrowse = new JButton("Browse");
 		btnHamBrowse = new JButton("Browse");
 		tfSpamDir = new JTextField(20);

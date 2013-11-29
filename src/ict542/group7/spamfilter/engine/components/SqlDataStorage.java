@@ -16,10 +16,14 @@ import ict542.group7.spamfilter.engine.utils.SqlUtils;
 public class SqlDataStorage extends AbstractDataStorage {
 	
 	private static final Logger logger = Logger.getLogger(SqlDataStorage.class);
+	
+	public SqlDataStorage() {
+		SqlUtils.initializeDB();
+	}
 
 	@Override
 	public void addFeature(String tokenString, int emailType) {
-		logger.debug("add feature: " + tokenString);
+		//logger.debug("add feature: " + tokenString);
 		boolean isNewFeature = false;
 		Feature feature = SqlUtils.searchFeatureByTokenString(tokenString);
 		if (feature == null) {

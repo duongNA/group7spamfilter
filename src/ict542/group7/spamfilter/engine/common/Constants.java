@@ -12,7 +12,7 @@ public class Constants {
 	
 	public static final int GRAHAM_BIAS_FACTOR = 2;
 	
-	public static final int HAPAXES_THRESHOLD = 5;
+	public static final int HAPAXES_THRESHOLD = 2;
 	
 	public static final double HAPAXIAL_VALUE = 0.4;
 	
@@ -22,5 +22,5 @@ public class Constants {
 	
 	public static final int NUM_INTEREST_FEATURES = 15;
 	
-	public static final double SPAM_PROBABILITY_THRESHOLD = 0.5;
+	public static final double SPAM_PROBABILITY_THRESHOLD = 0.9;
 }

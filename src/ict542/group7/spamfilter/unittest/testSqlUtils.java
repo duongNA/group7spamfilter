@@ -9,6 +9,8 @@ public class testSqlUtils {
 	
 	@Test
 	public void testCreateDatabase() {
+		SqlUtils.initializeDB();
+		
 		Feature feature = new Feature("word");
 		SqlUtils.insertFeature(feature);
 		SqlUtils.listFeatures();
