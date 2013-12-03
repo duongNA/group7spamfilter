@@ -18,7 +18,7 @@ public class testFeatureExtractor {
 		String emailFilePath = "test/data/011";
 		extractor.extractFeatures(emailFilePath, Constants.SPAM_EMAIL, FeatureExtractor.FOR_TRAINING);
 		
-		emailFilePath = "test/data/email-test";
-		extractor.extractFeatures(emailFilePath, Constants.SPAM_EMAIL, FeatureExtractor.FOR_TRAINING);
+//		emailFilePath = "test/data/email-test";
+//		extractor.extractFeatures(emailFilePath, Constants.SPAM_EMAIL, FeatureExtractor.FOR_TRAINING);
 	}
 }

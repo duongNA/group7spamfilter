@@ -17,8 +17,11 @@ import java.util.Map;
  */
 public class AnalysisEngine implements DataClearable {
 	private AbstractDataStorage dataStorage;
-	
 	private Map<String, Feature> emailFeatureMap = new HashMap<String, Feature>();
+	
+	private List<Feature> featureList = new LinkedList<Feature>();
+	private double combinationProbability;
+	
 	
 	public AnalysisEngine(AbstractDataStorage dataStorage) {
 		this.dataStorage = dataStorage;
@@ -40,7 +43,8 @@ public class AnalysisEngine implements DataClearable {
 	
 	public boolean isSpamEmail() {
 		List<Feature> interestList = getInterestFeatureList();
-		double combinationProbability = computeBayesianCombination(interestList);
+		
+		combinationProbability = computeBayesianCombination(interestList);
 		if (combinationProbability >= Constants.SPAM_PROBABILITY_THRESHOLD) {
 			return true;
 		} else {
@@ -50,9 +54,11 @@ public class AnalysisEngine implements DataClearable {
 	}
 	
 	private List<Feature> getInterestFeatureList() {
-		List<Feature> featureList = new LinkedList<Feature>(emailFeatureMap.values());
+		featureList.clear();
+		featureList.addAll(emailFeatureMap.values());
+		
 		// sort feature list by interestingness
-		Collections.sort(featureList, new FeatureInterestingnessComparator());
+		Collections.sort(featureList, Collections.reverseOrder(new FeatureInterestingnessComparator()));
 		
 		// get n most interest feature
 		int n = Math.min(featureList.size(), Constants.NUM_INTEREST_FEATURES);
@@ -73,7 +79,7 @@ public class AnalysisEngine implements DataClearable {
 		double b = 1;
 		for (Feature f : interestList) {
 			a *= f.getPropability();
-			b *= 1 - f.getPropability();
+			b *= (1 - f.getPropability());
 		}
 		
 		double res = a/(a+b);
@@ -83,5 +89,13 @@ public class AnalysisEngine implements DataClearable {
 	@Override
 	public void clearData() {
 		emailFeatureMap.clear();
+	}
+	
+	public List<Feature> getFeatureList() {
+		return new LinkedList<Feature>(featureList);
+	}
+	
+	public double getCombinationProbability() {
+		return combinationProbability;
 	}
 }

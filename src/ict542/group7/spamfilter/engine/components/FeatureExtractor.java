@@ -6,6 +6,7 @@ import ict542.group7.spamfilter.engine.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -53,32 +54,34 @@ public class FeatureExtractor {
 	}
 	
 	public void extractFeatures(String filePath, Integer emailType, int isFor) {
-		String content = null;
+
 		try {
-			content = readFileContent(filePath);
+			FileReader reader = new FileReader(filePath);
+			Scanner scanner = new Scanner(reader);
+			scanner.useDelimiter(Constants.EMAIL_DELIMITERS_FOR_SCANNER);
+
+			while (scanner.hasNext()) {
+				String token = scanner.next();
+				
+				// skip the token if it's too short or contain only digits
+//				if (token.length() < Constants.MIN_TOKEN_LENG || StringUtils.containsOnlyDigits(token)) {
+//					continue;
+//				}
+				
+				if (isFor == FOR_TRAINING) {
+					// add feature to storage
+					dataStorage.addFeature(token, emailType);
+				} else if (isFor == FOR_ANALYSIS) {
+					// add email feature to analysis engine
+					analysisEngine.addEmailFeature(token);
+				}
+			}
+			
+			scanner.close();
+
 		} catch (IOException ioException) {
 			logger.debug("Error occur when read file: " + filePath, ioException);
 			return;
 		}
-		
-		// parse file content to get token
-		StringTokenizer tokenizer = new StringTokenizer(content, Constants.EMAIL_DELIMITERS);
-		while (tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken();
-
-			// skip the token if it's too short or contain only digits
-			if (token.length() < Constants.MIN_TOKEN_LENG || StringUtils.containsOnlyDigits(token)) {
-				continue;
-			}
-			
-			if (isFor == FOR_TRAINING) {
-				// add feature to storage
-				dataStorage.addFeature(token, emailType);
-			} else if (isFor == FOR_ANALYSIS) {
-				// add email feature to analysis engine
-				analysisEngine.addEmailFeature(token);
-			}
-		}
-		
 	}
 }

@@ -12,3 +12,5 @@ target/
 # ignore derby db
 *DerbyDB/
 derby.log
+
+feature.data

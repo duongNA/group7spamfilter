@@ -1,5 +1,6 @@
 package ict542.group7.spamfilter.engine.components;
 
+import ict542.group7.spamfilter.engine.ComputeFeatureProbListener;
 import ict542.group7.spamfilter.engine.common.DataClearable;
 import ict542.group7.spamfilter.engine.common.Feature;
 
@@ -13,6 +14,8 @@ import java.util.Map;
  */
 public abstract class AbstractDataStorage implements DataClearable {
 	protected Map<String, Feature> featureMap = new HashMap<String, Feature>();
+	
+	protected ComputeFeatureProbListener computeListener;
 	
 	public abstract void addFeature(String tokenString, int emailType);
 	
@@ -34,5 +37,9 @@ public abstract class AbstractDataStorage implements DataClearable {
 	@Override
 	public void clearData() {
 		featureMap.clear();
+	}
+	
+	public void setComputeFeatureProbListener(ComputeFeatureProbListener listener) {
+		computeListener = listener;
 	}
 }

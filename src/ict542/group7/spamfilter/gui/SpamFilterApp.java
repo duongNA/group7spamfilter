@@ -38,6 +38,7 @@ public class SpamFilterApp extends JFrame {
 		Global.engine = new SpamFilterEngine();
 		Global.engine.clearData();
 		
+		
 		JFrame appFrame = new SpamFilterApp();
 		//appFrame.pack();
 		appFrame.setVisible(true);

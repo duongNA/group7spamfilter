@@ -8,11 +8,13 @@ public class Constants {
 	
 	public static final String EMAIL_DELIMITERS = "\n\t\f\r !@#$%^&*()_+-={}:[];'<>,./`~)\"";
 	
+	public static final String EMAIL_DELIMITERS_FOR_SCANNER = "[\n\t\r\f\":;,<>!/&%#_'=~ \\{\\}\\[\\]\\+\\-\\(\\)\\*\\?\\$]+";
+	
 	public static final int MIN_TOKEN_LENG = 3;
 	
 	public static final int GRAHAM_BIAS_FACTOR = 2;
 	
-	public static final int HAPAXES_THRESHOLD = 2;
+	public static final int HAPAXES_THRESHOLD = 1; // disable hapaxes
 	
 	public static final double HAPAXIAL_VALUE = 0.4;
 	

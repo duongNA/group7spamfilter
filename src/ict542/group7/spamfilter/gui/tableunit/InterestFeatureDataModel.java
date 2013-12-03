@@ -8,11 +8,12 @@ import java.util.List;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
-public class FeatureDataModel extends AbstractTableModel {
+public class InterestFeatureDataModel extends AbstractTableModel {
+	
 	private List<Feature> featureList = new LinkedList<Feature>();
-	private String[] colNames = {"Number", "Feature", "Occur in spam", "Occur in non-spam", "Probability"};
+	private String[] colNames = {"Number", "Feature", "Occur in spam", "Occur in non-spam", "Probability given spam", "Interestingness"};
 
-	public FeatureDataModel(List featureList) {
+	public InterestFeatureDataModel(List featureList) {
 		super();
 		this.featureList = featureList;
 	}
@@ -51,8 +52,11 @@ public class FeatureDataModel extends AbstractTableModel {
 		case 4:
 			// probability
 			return feature.getPropability();
+		case 5:
+			// interestingness
+			return feature.getInterestingness();
 		default:
-				return null;
+			return null;
 		}
 		
 	}
@@ -76,7 +80,10 @@ public class FeatureDataModel extends AbstractTableModel {
 		case 4:
 			// probability
 			return Double.class;
-
+		case 5:
+			// interesting
+			return Double.class;
+			
 		default:
 			return null;
 		}
@@ -99,11 +106,6 @@ public class FeatureDataModel extends AbstractTableModel {
 	
 	public void clearList() {
 		this.featureList.clear();
-		fireTableChanged(new TableModelEvent(this));
-	}
-	
-	public void addFeatures(List<Feature> moreFeatures) {
-		this.featureList.addAll(moreFeatures);
 		fireTableChanged(new TableModelEvent(this));
 	}
 }
